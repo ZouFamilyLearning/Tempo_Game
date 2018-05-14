@@ -15,7 +15,6 @@ namespace Tempo_Game.GameObjects
         public HealBox(GameController controller, int hp, int position) : base(controller, "Images//Healbox_1.png", position)
         {
             this.hp = hp;
-
         }
 
         // 加減的分數要記錄到哪裡

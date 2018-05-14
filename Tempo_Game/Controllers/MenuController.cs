@@ -26,6 +26,7 @@ namespace Tempo_Game.Controllers
         // Menu Status
         private int menuStatus;
 
+        List<MyButton> buttons = new List<MyButton>();
 
         public MenuController(Gameform form)
         {
@@ -34,6 +35,8 @@ namespace Tempo_Game.Controllers
 
             // Set Menu Status
             this.menuStatus = MENU_STATUS_WAIT;
+
+            buttons.Add(new MyButton(300, 300, 200, Color.Red, "Start GAME!"));
         }
 
 
@@ -49,10 +52,18 @@ namespace Tempo_Game.Controllers
             startBtn.Size = new System.Drawing.Size(buttonWidth, buttonHeight);
             startBtn.Text = "Start Game";
             startBtn.Click += new System.EventHandler(startBtn_Click);
-            
-            
+
+
             // add object
             form.Controls.Add(startBtn);
+        }
+
+        public void draw(Graphics g)
+        {
+            foreach(MyButton button in buttons)
+            {
+                button.draw(g);
+            }
         }
 
         private void startBtn_Click(object sender, EventArgs e)
@@ -68,5 +79,32 @@ namespace Tempo_Game.Controllers
             return result;
         }
 
+        class MyButton
+        {
+            int x;
+            int y;
+            int r;
+            SolidBrush textBrush;
+            SolidBrush circleBrush;
+            Font font;
+            string text;
+
+            public MyButton(int x, int y, int r, Color color, string text)
+            {
+                this.x = x;
+                this.y = y;
+                this.r = r;
+                this.text = text;
+                font = new Font("Arial", r / 3);
+                textBrush = new SolidBrush(Color.Black);
+                circleBrush = new SolidBrush(color);
+            }
+
+            public void draw(Graphics g)
+            {
+                g.FillEllipse(circleBrush, x - r, y - r, 2 * r, 2 * r);
+                g.DrawString(text, font, textBrush, new RectangleF(x - r * 0.8f, y - r * 0.8f, r * 1.6f, r * 1.6f));
+            }
+        }
     }
 }

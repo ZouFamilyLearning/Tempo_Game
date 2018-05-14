@@ -30,9 +30,6 @@ namespace Tempo_Game.GameObjects
         public bool currentlyAnimating = false;
         public bool keyPressOfJump;
 
-
-        public System.Media.SoundPlayer playerJumpMusic;
-
         public Player(GameController controller, string playerImageName, GameObject startGameObject, GameObject targetGameObject)
         {
             this.controller = controller;
@@ -42,7 +39,7 @@ namespace Tempo_Game.GameObjects
             startJumpPosition = startGameObject.x;      // 一開始人物要跳躍時的位置 = 物件一開始的位置
             targetJumpPosition = targetGameObject.x;    // 人物跳下來時的位置 = startGameObject的下個物件位置
 
-            image = new Bitmap(playerImageName);             // 人物的圖片生成
+            image = new Bitmap(playerImageName);        // 人物的圖片生成
         }
 
         // 畫Player
@@ -50,7 +47,7 @@ namespace Tempo_Game.GameObjects
         {
             if (!currentlyAnimating)
             {
-                ImageAnimator.Animate(image, new EventHandler(this.OnFrameChanged));
+                ImageAnimator.Animate(image, new EventHandler(OnFrameChanged));
                 currentlyAnimating = true;
             }
 

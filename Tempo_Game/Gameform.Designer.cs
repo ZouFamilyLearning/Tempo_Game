@@ -45,7 +45,8 @@
             this.ClientSize = new System.Drawing.Size(874, 398);
             this.Name = "Gameform";
             this.Text = "Form1";
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Jumping_KeyPress);
+            this.Load += new System.EventHandler(this.Gameform_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Jumping_KeyDown);
             this.ResumeLayout(false);
 
         }

@@ -58,7 +58,7 @@ namespace Tempo_Game.GameObjects
         // 檢查是否碰撞
         public bool checkCollided(Player player)
         {
-            return Math.Abs(player.x - x) < (player.width / 2 + width / 2) && Math.Abs(player.y) < 75;
+            return Math.Abs(player.x - x) < (player.width / 2 + width / 2);
         }
 
         public int CompareTo(object obj)

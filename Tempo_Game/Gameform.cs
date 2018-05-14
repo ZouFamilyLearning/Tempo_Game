@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tempo_Game.Controllers;
 using Tempo_Game.GameObjects;
@@ -14,78 +8,51 @@ namespace Tempo_Game
 {
     public partial class Gameform : Form
     {
-        // Status Define
-        private const int SCREEN_STATUS_MENU = 0;
-        private const int SCREEN_STATUS_GAME_NORMAL = 1;
-        private const int SCREEN_STATUS_HOW_TO_PLAY = 2;
-        private const int SCREEN_STATUS_GAME_END = 3;
-
+        enum GameState { SCREEN_STATUS_MENU, SCREEN_STATUS_GAME_NORMAL, SCREEN_STATUS_HOW_TO_PLAY, SCREEN_STATUS_GAME_END };
+        GameState state = GameState.SCREEN_STATUS_MENU;
 
         // Controllers
         public MenuController menuController;
         public GameController gameController;
 
-
-        // Program Status Control
-        private int screenStatus;
-
         public Gameform()
         {
-            // Init Controllers
-            gameController = new GameController(this);
-            menuController = new MenuController(this);
-
             InitializeComponent();
-            this.Size = new Size(1240, 768); // 限制form大小
-
-
-            // Init Program Status
-            screenStatus = SCREEN_STATUS_MENU;
-
-
-            //this.Controls.Clear();
-            //menuController.showMenu();
-
-            DoubleBuffered = true; // 將原本的物件保留一下，等下一個出現後再消失
+            Size = new Size(1240, 768);     // 限制form大小
+            DoubleBuffered = true;          // 將原本的物件保留一下，等下一個出現後再消失
         }
 
+        private void Gameform_Load(object sender, EventArgs e)
+        {
+            gameController = new GameController(this);
+            menuController = new MenuController(this);
+        }
 
         private void Main_Tick(object sender, EventArgs e)
         {
-            // 主選單
-            //if (screenStatus == SCREEN_STATUS_MENU)
-            //{
-            //    if (menuController.GetMenuStatus() == MenuController.MENU_STATUS_START_CLICKED)
-            //    {
-            //        screenStatus = SCREEN_STATUS_GAME_NORMAL;
-            //    }
-            //}
-            //else if (screenStatus == SCREEN_STATUS_GAME_NORMAL)
-            //{
+            if (state == GameState.SCREEN_STATUS_GAME_NORMAL)
+            {
+                gameController.tick();
+            }
 
-            //    this.Controls.Clear();
-
-            //}
-            gameController.tick();
-
-            this.Invalidate(); // 全部洗掉再印一次，會去觸發OnPaint
+            Invalidate();           // 全部洗掉再印一次，會去觸發OnPaint
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //if (screenStatus == SCREEN_STATUS_MENU)
-            //{
-            //}
-            //else if (screenStatus == SCREEN_STATUS_GAME_NORMAL)
-            //{
-            //    gameController.draw(e.Graphics);
-            //}
-            gameController.draw(e.Graphics);
+            if (state == GameState.SCREEN_STATUS_MENU)
+            {
+                menuController.draw(e.Graphics);
+            }
+            else if (state == GameState.SCREEN_STATUS_GAME_NORMAL)
+            {
+                gameController.draw(e.Graphics);
+            }
         }
 
-        private void Jumping_KeyPress(object sender, KeyPressEventArgs e)
+        private void Jumping_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == ' ')
+            if (e.KeyCode == Keys.Space)
             {
                 if (gameController.player.state == Player.State.JUMP_NORMALLY)
                 {
